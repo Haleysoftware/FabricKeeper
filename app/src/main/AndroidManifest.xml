@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.haleysoftware.fabrickeeper">
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <application
+        android:allowBackup="true"
+
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/name_app"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".ListActivity"
+            android:screenOrientation="sensorPortrait">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value="com.example.ExampleActivity" />
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <activity
+            android:name=".DetailActivity"
+            android:label="@string/name_details"
+            android:parentActivityName=".ListActivity"
+            android:screenOrientation="sensorPortrait" />
+
+        <activity
+            android:name=".EditActivity"
+            android:parentActivityName=".DetailActivity"
+            android:screenOrientation="sensorPortrait" />
+
+        <activity
+            android:name=".ImageActivity"
+            android:label="@string/name_image_full"
+            android:parentActivityName=".DetailActivity"
+            android:screenOrientation="sensor" />
+
+        <provider
+            android:name=".utils.FabricProvider"
+            android:authorities="com.haleysoftware.fabrickeeper"
+            android:exported="false" />
+
+    </application>
+
+</manifest>

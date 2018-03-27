@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1014779138277",
+    "firebase_url": "https://fabric-keeper.firebaseio.com",
+    "project_id": "fabric-keeper",
+    "storage_bucket": "fabric-keeper.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1014779138277:android:f69bbc6e519d3148",
+        "android_client_info": {
+          "package_name": "com.haleysoftware.fabrickeeper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1014779138277-mvch165emm5clnq7d43lf8e36c6jk7gr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.haleysoftware.fabrickeeper",
+            "certificate_hash": "7bd81cbd9856adf769bf1189c8746aa6954e6ae3"
+          }
+        },
+        {
+          "client_id": "1014779138277-p4pmrppitltriorb26ocllusvl8dc6fd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3f_iupRSQYSwJ9XRijKWGfhLBDudZoZY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1014779138277-p4pmrppitltriorb26ocllusvl8dc6fd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,83 @@
+<resources>
+
+    <!-- Activity Labels -->
+    <string name="name_app">Fabric Closet</string>
+
+    <string name="name_list">Inventory</string>
+
+    <string name="name_details">Fabric Details</string>
+
+    <string name="name_image_full">Fabric View</string>
+
+    <string name="name_add">Add Fabric</string>
+
+    <string name="name_edit">Edit Fabric</string>
+
+    <!-- Ad Id Strings -->
+    <string name="test_banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
+    <string name="my_banner_ad_unit_id">cca-app-pub-8481466956375032/4991369519</string>
+
+
+    <!-- View Strings -->
+    <string name="empty_view">No fabric found</string>
+
+    <string name="fail_to_add">Failed to add Fabric</string>
+
+    <string name="fail_to_update">Failed to update Fabric</string>
+
+    <string name="empty_description">Description can\'t be empty</string>
+
+    <string name="empty_keywords">Keywords can\'t be empty</string>
+
+    <string name="null_yards">Yards needs to be a number, decimal are okay.</string>
+
+    <string name="null_width">The width need to be a number, decimal are okay.</string>
+
+
+    <!-- Delete dialog Text -->
+    <string name="delete_dialog_msg">Delete this item?</string>
+
+    <string name="delete">Delete</string>
+
+    <string name="cancel">Cancel</string>
+
+
+    <!-- Menu Text -->
+    <string name="menu_search_action">Search</string>
+
+    <string name="menu_save_action">Save</string>
+
+    <string name="menu_edit_action">Edit</string>
+
+    <string name="menu_clear_action">Clear</string>
+
+    <string name="menu_delete_action">Delete</string>
+
+    <!-- Edit Text hints -->
+    <string name="hint_search">Search for</string>
+
+    <!-- Descriptions for views, used for the blind -->
+    <string name="des_iv_fabric">Fabric Image</string>
+
+
+    <!-- Identifiers for detail and edit views -->
+    <string name="view_description">Description:</string>
+
+    <string name="view_keywords">Keywords:</string>
+
+    <string name="view_location">Location:</string>
+
+    <string name="view_projects">Projects:</string>
+
+    <string name="view_yards">Yards:</string>
+
+    <string name="view_width">Width:</string>
+
+    <string name="view_name">Design Name:</string>
+
+    <string name="view_designer">Fabric Designer:</string>
+
+    <string name="view_purchased">Place Purchased:</string>
+
+</resources>

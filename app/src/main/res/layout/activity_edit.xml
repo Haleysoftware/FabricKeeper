@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.haleysoftware.fabrickeeper.EditActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="3dp">
+
+            <ImageView
+                android:id="@+id/iv_fabric_main"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_margin="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextDisplayLeft"
+                    android:text="@string/view_description" />
+
+                <EditText
+                    android:id="@+id/et_description"
+                    style="@style/TextDisplayRight"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords|textAutoCorrect" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextDisplayLeft"
+                    android:text="@string/view_keywords" />
+
+                <EditText
+                    android:id="@+id/et_keywords"
+                    style="@style/TextDisplayRight"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords|textAutoCorrect" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextDisplayLeft"
+                    android:text="@string/view_location" />
+
+                <EditText
+                    android:id="@+id/et_location"
+                    style="@style/TextDisplayRight"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences|textAutoCorrect" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextDisplayLeft"
+                    android:text="@string/view_projects" />
+
+                <EditText
+                    android:id="@+id/et_projects"
+                    style="@style/TextDisplayRight"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences|textAutoCorrect" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextDisplayLeft"
+                    android:text="@string/view_yards" />
+
+                <EditText
+                    android:id="@+id/et_yards"
+                    style="@style/TextDisplayRight"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextDisplayLeft"
+                    android:text="@string/view_width" />
+
+                <EditText
+                    android:id="@+id/et_fabric_width"
+                    style="@style/TextDisplayRight"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextDisplayLeft"
+                    android:text="@string/view_name" />
+
+                <EditText
+                    android:id="@+id/et_fabric_name"
+                    style="@style/TextDisplayRight"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences|textAutoCorrect" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextDisplayLeft"
+                    android:text="@string/view_designer" />
+
+                <EditText
+                    android:id="@+id/et_designer"
+                    style="@style/TextDisplayRight"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences|textAutoCorrect" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/TextDisplayLeft"
+                    android:text="@string/view_purchased" />
+
+                <EditText
+                    android:id="@+id/et_purchased"
+                    style="@style/TextDisplayRight"
+                    android:imeOptions="actionDone"
+                    android:inputType="textCapSentences|textAutoCorrect" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <View
+        android:id="@+id/adSpacer"
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/test_banner_ad_unit_id" />
+
+</LinearLayout>
