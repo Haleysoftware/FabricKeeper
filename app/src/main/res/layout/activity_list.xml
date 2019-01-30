@@ -39,7 +39,7 @@
             android:indeterminate="true"
             android:visibility="invisible" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,6 +61,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         ads:adSize="BANNER"
-        ads:adUnitId="@string/test_banner_ad_unit_id" />
+        ads:adUnitId="@string/banner_ad_unit_id" />
 
 </LinearLayout>

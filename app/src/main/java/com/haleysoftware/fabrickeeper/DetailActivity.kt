@@ -6,13 +6,14 @@ import android.content.*
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.haleysoftware.fabrickeeper.utils.FabricAds
 import com.haleysoftware.fabrickeeper.utils.FabricContract.FabricEntry
 import java.io.File
@@ -27,6 +28,8 @@ class DetailActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
     private val LOADER_ID = 22
 
     private var adsView: AdView? = null
+
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
     private var fabricUri: Uri? = null
 
@@ -52,6 +55,9 @@ class DetailActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         val bundleIntent = intent
         fabricUri = bundleIntent.data

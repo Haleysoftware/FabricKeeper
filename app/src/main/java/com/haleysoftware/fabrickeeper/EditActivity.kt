@@ -7,15 +7,16 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.haleysoftware.fabrickeeper.utils.FabricAds
 import com.haleysoftware.fabrickeeper.utils.FabricContract.FabricEntry
 import java.io.File
@@ -32,6 +33,8 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
     private val cameraIntentRequest = 3224
 
     private var adsView: AdView? = null
+
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
     private var fabricUri: Uri? = null
 
@@ -56,6 +59,9 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
+
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         val bundleIntent = intent
         fabricUri = bundleIntent.data

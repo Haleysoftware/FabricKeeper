@@ -7,9 +7,10 @@ import android.content.Loader
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.haleysoftware.fabrickeeper.utils.FabricContract
 import java.io.File
 
@@ -24,12 +25,17 @@ class ImageActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>
 
     private var fabricUri: Uri? = null
 
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
+
     /**
      *
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image)
+
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         val bundleIntent = intent
         fabricUri = bundleIntent.data

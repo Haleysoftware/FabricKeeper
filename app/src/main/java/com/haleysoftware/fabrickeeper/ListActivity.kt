@@ -7,20 +7,25 @@ import android.content.Intent
 import android.content.Loader
 import android.database.Cursor
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.View
 import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.SearchView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.haleysoftware.fabrickeeper.utils.FabricAdapter
 import com.haleysoftware.fabrickeeper.utils.FabricAds
 import com.haleysoftware.fabrickeeper.utils.FabricContract
 
+
+/**
+ * 
+ */
 
 /**
  * Main Launch Activity
@@ -52,6 +57,8 @@ class ListActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, SearchView.On
 
     private var adsView: AdView? = null
 
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
+
     private val loaderId = 22
 
     /**
@@ -59,6 +66,10 @@ class ListActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, SearchView.On
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
         setContentView(R.layout.activity_list)
         supportActionBar?.setTitle(R.string.name_list)
 
