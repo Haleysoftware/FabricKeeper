@@ -35,8 +35,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.browser:browser:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'com.jakewharton:butterknife:10.0.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+    // Butterknife 10.0.0 had major errors and needed min to be 26
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha4', {

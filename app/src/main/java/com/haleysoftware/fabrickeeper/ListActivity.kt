@@ -42,20 +42,20 @@ class ListActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, SearchView.On
 
     private var searchWord = ""
     //The custom fabricAdapter to work with the cursor data and the listview
-    private var fabricAdapter: FabricAdapter? = null
+    private lateinit var fabricAdapter: FabricAdapter
     //Link to the list view to fill with content
-    private var fabricList: ListView? = null
+    private lateinit var fabricList: ListView
 
     //TODO: Need to add a gridview and the power to switch between views
 
     //Shown when the database is empty
-    private var emptyList: TextView? = null
+    private lateinit var emptyList: TextView
     //Shown when the database query is going on
-    private var loadList: ProgressBar? = null
+    private lateinit var loadList: ProgressBar
 
-    private var adsView: AdView? = null
+    private lateinit var adsView: AdView
 
-    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     private val loaderId = 22
 
@@ -66,7 +66,7 @@ class ListActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, SearchView.On
         super.onCreate(savedInstanceState)
 
         // Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         setContentView(R.layout.activity_list)
         supportActionBar?.setTitle(R.string.name_list)
@@ -81,7 +81,7 @@ class ListActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, SearchView.On
         emptyList = findViewById(R.id.tv_empty_list)
         loadList = findViewById(R.id.pb_loading_list)
 
-        fabricList?.setOnItemClickListener { _, _, _, id ->
+        fabricList.setOnItemClickListener { _, _, _, id ->
             val activityIntent = Intent(this, DetailActivity::class.java)
             activityIntent.data = ContentUris.withAppendedId(FabricContract.FabricEntry.CONTENT_URI, id)
             startActivity(activityIntent)
@@ -90,7 +90,7 @@ class ListActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, SearchView.On
         createAds(context = this)
 
         fabricAdapter = FabricAdapter(this, null, 0)
-        fabricList?.adapter = fabricAdapter
+        fabricList.adapter = fabricAdapter
         loaderManager.initLoader(loaderId, null, this)
     }
 
@@ -99,7 +99,7 @@ class ListActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, SearchView.On
      */
     override fun onPause() {
         super.onPause()
-        adsView?.pause()
+        adsView.pause()
     }
 
     /**
@@ -108,7 +108,7 @@ class ListActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, SearchView.On
      */
     override fun onResume() {
         super.onResume()
-        adsView?.resume()
+        adsView.resume()
         loaderManager.restartLoader(loaderId, null, this)
     }
 
@@ -117,17 +117,7 @@ class ListActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, SearchView.On
      */
     override fun onDestroy() {
         super.onDestroy()
-        adsView?.destroy()
-    }
-
-    /**
-     * Let's get a menu created
-     */
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_list, menu)
-        val search = menu!!.findItem(R.id.action_search).actionView as SearchView
-        search.setOnQueryTextListener(this)
-        return true
+        adsView.destroy()
     }
 
     /**
@@ -142,9 +132,21 @@ class ListActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, SearchView.On
                 .addTestDevice("017DFE675121B084DB5B940BFC1C41CC")
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build()
-        adsView?.adListener = FabricAds(context)
-        adsView?.loadAd(adRequest)
+        adsView.adListener = FabricAds(context)
+        adsView.loadAd(adRequest)
     }
+
+    /**
+     * Let's get a menu created
+     */
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_list, menu)
+        val search = menu!!.findItem(R.id.action_search).actionView as SearchView
+        search.setOnQueryTextListener(this)
+        return true
+    }
+
+
 
     //TODO: Need to add a menu item to remove ads
 
@@ -173,9 +175,9 @@ class ListActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, SearchView.On
      * Creates the cursor loader for the content provider.
      */
     override fun onCreateLoader(id: Int, bundle: Bundle?): Loader<Cursor> {
-        fabricList?.visibility = View.INVISIBLE
-        emptyList?.visibility = View.INVISIBLE
-        loadList?.visibility = View.VISIBLE
+        fabricList.visibility = View.INVISIBLE
+        emptyList.visibility = View.INVISIBLE
+        loadList.visibility = View.VISIBLE
 
         val projection = arrayOf(
                 FabricContract.FabricEntry.ROW_ID,
@@ -213,22 +215,22 @@ class ListActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, SearchView.On
      * Send that cursor to the adapter.
      */
     override fun onLoadFinished(loader: Loader<Cursor>?, cursor: Cursor?) {
-        loadList?.visibility = View.INVISIBLE
+        loadList.visibility = View.INVISIBLE
         if (cursor?.count != 0 && cursor != null) {
-            fabricList?.visibility = View.VISIBLE
-            emptyList?.visibility = View.INVISIBLE
+            fabricList.visibility = View.VISIBLE
+            emptyList.visibility = View.INVISIBLE
         } else {
 
-            fabricList?.visibility = View.INVISIBLE
-            emptyList?.visibility = View.VISIBLE
+            fabricList.visibility = View.INVISIBLE
+            emptyList.visibility = View.VISIBLE
         }
-        fabricAdapter?.swapCursor(cursor)
+        fabricAdapter.swapCursor(cursor)
     }
 
     /**
      * Time to reset! Swap that cursor
      */
     override fun onLoaderReset(loader: Loader<Cursor>?) {
-        fabricAdapter?.swapCursor(null)
+        fabricAdapter.swapCursor(null)
     }
 }

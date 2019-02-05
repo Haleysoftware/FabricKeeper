@@ -28,7 +28,7 @@ class FabricProvider : ContentProvider() {
     //Helper Function to build a Uri matcher that will help identify what Uri was used
     private fun buildUriHelper(): UriMatcher {
         //Build a blank UriMatcher to start off with
-        var uriMacher = UriMatcher(UriMatcher.NO_MATCH)
+        val uriMacher = UriMatcher(UriMatcher.NO_MATCH)
         //Add the Uri for all rows
         uriMacher.addURI(FabricContract.AUTHORITY, FabricContract.PATH_FABRIC, FABRIC)
         //Add the Uri for a single row
@@ -111,6 +111,7 @@ class FabricProvider : ContentProvider() {
         //Get a match for the Uri
         val match = URI_MATCHER.match(uri)
         //Use a Switch to do the right task depending on the Uri
+        //TODO need to change to val and test
         var returnUri: Uri?
         when (match) {
             FABRIC -> {

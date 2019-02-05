@@ -26,11 +26,9 @@ import java.io.File
  */
 class DetailActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> {
 
-
-
     private val LOADER_ID = 22
 
-    private var adsView: AdView? = null
+    private lateinit var adsView: AdView
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
@@ -43,9 +41,9 @@ class DetailActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
     private lateinit var textYards: TextView
     private lateinit var textWidth: TextView
     private lateinit var textName: TextView
-    private var textDesigner: TextView? = null
-    private var textPurchased: TextView? = null
-    private var imageFabric: ImageView? = null
+    private lateinit var textDesigner: TextView
+    private lateinit var textPurchased: TextView
+    private lateinit var imageFabric: ImageView
 
     private var imagePath: String = ""
 
@@ -90,7 +88,7 @@ class DetailActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
      */
     override fun onPause() {
         super.onPause()
-        adsView?.pause()
+        adsView.pause()
     }
 
     /**
@@ -98,7 +96,7 @@ class DetailActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
      */
     override fun onResume() {
         super.onResume()
-        adsView?.resume()
+        adsView.resume()
     }
 
     /**
@@ -106,7 +104,7 @@ class DetailActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
      */
     override fun onDestroy() {
         super.onDestroy()
-        adsView?.destroy()
+        adsView.destroy()
     }
 
     /**
@@ -129,8 +127,8 @@ class DetailActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
                 .addTestDevice("017DFE675121B084DB5B940BFC1C41CC")
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build()
-        adsView?.adListener = FabricAds(context)
-        adsView?.loadAd(adRequest)
+        adsView.adListener = FabricAds(context)
+        adsView.loadAd(adRequest)
     }
 
     /**
@@ -156,21 +154,16 @@ class DetailActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
      *
      */
     private fun showDeleteConfirmationDialog() {
-        // Create an AlertDialog.Builder and set the message, and click listeners
-        // for the postivie and negative buttons on the dialog.
         val builder = AlertDialog.Builder(this)
         builder.setMessage(R.string.delete_dialog_msg)
-        builder.setPositiveButton(R.string.delete, DialogInterface.OnClickListener { dialog, id ->
-            // User clicked the "Delete" button, so delete the pet.
+        builder.setPositiveButton(R.string.delete){ _, _ ->
             if (deleteFabric()) {
                 finish()
             }
-        })
-        builder.setNegativeButton(R.string.cancel, DialogInterface.OnClickListener { dialog, id ->
-            // User clicked the "Cancel" button, so dismiss the dialog
-            // and continue editing the pet.
+        }
+        builder.setNegativeButton(R.string.cancel){ dialog, _ ->
             dialog?.dismiss()
-        })
+        }
 
         // Create and show the AlertDialog
         val alertDialog = builder.create()
@@ -194,7 +187,7 @@ class DetailActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
      */
     private fun deleteImage(imagePath: String) {
         if (imagePath.isNotEmpty()) {
-            var file = File(imagePath)
+            val file = File(imagePath)
             if (file.exists()) {
                 file.delete()
             }
@@ -244,21 +237,21 @@ class DetailActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
                 val purchasedText = data.getString(data.getColumnIndex(FabricEntry.COLUMN_PURCHASED))
                 imagePath = data.getString(data.getColumnIndex(FabricEntry.COLUMN_IMAGE))
 
-                textDescription?.text = descriptionText
-                textKeywords?.text = keywordsText
-                textLocation?.text = locationText
-                textProjects?.text = projectsText
-                textYards?.text = yardsInt.toString()
-                textWidth?.text = widthInt.toString()
-                textName?.text = dNameText
-                textDesigner?.text = designerText
-                textPurchased?.text = purchasedText
+                textDescription.text = descriptionText
+                textKeywords.text = keywordsText
+                textLocation.text = locationText
+                textProjects.text = projectsText
+                textYards.text = yardsInt.toString()
+                textWidth.text = widthInt.toString()
+                textName.text = dNameText
+                textDesigner.text = designerText
+                textPurchased.text = purchasedText
 
                 if (imagePath.isEmpty()) {
-                    imageFabric?.setImageResource(R.drawable.ic_broken_image_24dp)
+                    imageFabric.setImageResource(R.drawable.ic_broken_image_24dp)
                 } else {
-                    imageFabric?.setImageURI(Uri.fromFile(File(imagePath)))
-                    imageFabric?.setOnClickListener {
+                    imageFabric.setImageURI(Uri.fromFile(File(imagePath)))
+                    imageFabric.setOnClickListener {
                         val activityIntent = Intent(this, ImageActivity::class.java)
                         activityIntent.data = fabricUri
                         startActivity(activityIntent)
@@ -272,15 +265,15 @@ class DetailActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
      *
      */
     override fun onLoaderReset(loader: Loader<Cursor>?) {
-        textDescription?.text = ""
-        textKeywords?.text = ""
-        textLocation?.text = ""
-        textProjects?.text = ""
-        textYards?.text = ""
-        textWidth?.text = ""
-        textName?.text = ""
-        textDesigner?.text = ""
-        textPurchased?.text = ""
-        imageFabric?.setImageResource(R.drawable.ic_broken_image_24dp)
+        textDescription.text = ""
+        textKeywords.text = ""
+        textLocation.text = ""
+        textProjects.text = ""
+        textYards.text = ""
+        textWidth.text = ""
+        textName.text = ""
+        textDesigner.text = ""
+        textPurchased.text = ""
+        imageFabric.setImageResource(R.drawable.ic_broken_image_24dp)
     }
 }

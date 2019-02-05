@@ -10,8 +10,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import butterknife.BindView
-import butterknife.ButterKnife
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.haleysoftware.fabrickeeper.utils.FabricContract
 import java.io.File
@@ -21,9 +19,11 @@ import java.io.File
  */
 class ImageActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> {
 
-    @BindView(R.id.iv_fabric_full) lateinit var imageFabric : ImageView
+    
 
     private val LOADER_ID = 33
+
+    private lateinit var imageFabric: ImageView
 
     private var fabricUri: Uri? = null
 
@@ -35,8 +35,8 @@ class ImageActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image)
-        ButterKnife.bind(this)
 
+        // Obtain the FirebaseAnalytics instance.
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         val bundleIntent = intent

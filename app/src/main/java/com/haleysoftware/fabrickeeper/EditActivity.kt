@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
@@ -33,22 +32,22 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
 
     private val cameraIntentRequest = 3224
 
-    private var adsView: AdView? = null
+    private lateinit var adsView: AdView
 
-    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     private var fabricUri: Uri? = null
 
-    private var textDescription: EditText? = null
-    private var textKeywords: EditText? = null
-    private var textLocation: EditText? = null
-    private var textProjects: EditText? = null
-    private var textYards: EditText? = null
-    private var textWidth: EditText? = null
-    private var textName: EditText? = null
-    private var textDesigner: EditText? = null
-    private var textPurchased: EditText? = null
-    private var imageFabric: ImageView? = null
+    private lateinit var textDescription: EditText
+    private lateinit var textKeywords: EditText
+    private lateinit var textLocation: EditText
+    private lateinit var textProjects: EditText
+    private lateinit var textYards: EditText
+    private lateinit var textWidth: EditText
+    private lateinit var textName: EditText
+    private lateinit var textDesigner: EditText
+    private lateinit var textPurchased: EditText
+    private lateinit var imageFabric: ImageView
 
     private var pathImage: String = ""
     private var tempBitmap: Bitmap? = null
@@ -62,7 +61,7 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
         setContentView(R.layout.activity_edit)
 
         // Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         val bundleIntent = intent
         fabricUri = bundleIntent.data
@@ -86,14 +85,14 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
         textPurchased = findViewById(R.id.et_purchased)
 
         imageFabric = findViewById(R.id.iv_fabric_main)
-        imageFabric?.setOnClickListener {
+        imageFabric.setOnClickListener {
             takePhoto()
         }
 
         if (fabricUri != null) {
             loaderManager.initLoader(loaderId, null, this)
         } else {
-            imageFabric?.setImageResource(R.drawable.ic_photo_camera_24dp)
+            imageFabric.setImageResource(R.drawable.ic_photo_camera_24dp)
         }
     }
 
@@ -102,17 +101,15 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
      */
     override fun onPause() {
         super.onPause()
-        adsView?.pause()
+        adsView.pause()
     }
 
     /**
-     * Restarts the loader, used mostly when activity is returned to.
      * Resumes the ad if there is one.
      */
     override fun onResume() {
         super.onResume()
-        adsView?.resume()
-        loaderManager.restartLoader(loaderId, null, this)
+        adsView.resume()
     }
 
     /**
@@ -120,7 +117,7 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
      */
     override fun onDestroy() {
         super.onDestroy()
-        adsView?.destroy()
+        adsView.destroy()
     }
 
     /**
@@ -135,8 +132,8 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
                 .addTestDevice("017DFE675121B084DB5B940BFC1C41CC")
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build()
-        adsView?.adListener = FabricAds(context)
-        adsView?.loadAd(adRequest)
+        adsView.adListener = FabricAds(context)
+        adsView.loadAd(adRequest)
     }
 
     /**
@@ -180,36 +177,36 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
      *
      */
     private fun clearFabric() {
-        textDescription?.text?.clear()
-        textKeywords?.text?.clear()
-        textLocation?.text?.clear()
-        textProjects?.text?.clear()
-        textYards?.text?.clear()
-        textWidth?.text?.clear()
-        textName?.text?.clear()
-        textDesigner?.text?.clear()
-        textPurchased?.text?.clear()
+        textDescription.text.clear()
+        textKeywords.text.clear()
+        textLocation.text.clear()
+        textProjects.text.clear()
+        textYards.text.clear()
+        textWidth.text.clear()
+        textName.text.clear()
+        textDesigner.text.clear()
+        textPurchased.text.clear()
 
-        imageFabric?.setImageResource(R.drawable.ic_photo_camera_24dp)
+        imageFabric.setImageResource(R.drawable.ic_photo_camera_24dp)
     }
 
     /**
      *
      */
     private fun saveFabric(): Boolean {
-        val descriptionText = textDescription!!.text.toString()
+        val descriptionText = textDescription.text.toString()
         if (descriptionText.isEmpty()) {
             Toast.makeText(this, R.string.empty_description, Toast.LENGTH_SHORT).show()
             return false
         }
 
-        val keywordsText = textKeywords!!.text.toString()
+        val keywordsText = textKeywords.text.toString()
         if (keywordsText.isEmpty()) {
             Toast.makeText(this, R.string.empty_keywords, Toast.LENGTH_SHORT).show()
             return false
         }
 
-        val yardsText = textYards!!.text.toString()
+        val yardsText = textYards.text.toString()
         val yardsInt: Double?
         if (yardsText.isEmpty()) {
             yardsInt = 0.0
@@ -221,7 +218,7 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
             }
         }
 
-        val widthText = textWidth!!.text.toString()
+        val widthText = textWidth.text.toString()
         val widthInt: Double?
         if (widthText.isEmpty()) {
             widthInt = 0.0
@@ -233,22 +230,22 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
             }
         }
 
-        if (tempBitmap != null) {
-            tempPath = saveImage(tempBitmap!!)
+        tempPath = if (tempBitmap == null) {
+            pathImage
         } else {
-            tempPath = pathImage
+            saveImage(tempBitmap!!)
         }
 
         val contentValues = ContentValues()
         contentValues.put(FabricEntry.COLUMN_DESCRIPTION, descriptionText)
         contentValues.put(FabricEntry.COLUMN_KEYWORDS, keywordsText)
-        contentValues.put(FabricEntry.COLUMN_LOCATION, textLocation?.text.toString())
-        contentValues.put(FabricEntry.COLUMN_PROJECTS, textProjects?.text.toString())
+        contentValues.put(FabricEntry.COLUMN_LOCATION, textLocation.text.toString())
+        contentValues.put(FabricEntry.COLUMN_PROJECTS, textProjects.text.toString())
         contentValues.put(FabricEntry.COLUMN_YARDS, yardsInt)
         contentValues.put(FabricEntry.COLUMN_WIDTH, widthInt)
-        contentValues.put(FabricEntry.COLUMN_DESIGN_NAME, textName?.text.toString())
-        contentValues.put(FabricEntry.COLUMN_DESIGNER, textDesigner?.text.toString())
-        contentValues.put(FabricEntry.COLUMN_PURCHASED, textPurchased?.text.toString())
+        contentValues.put(FabricEntry.COLUMN_DESIGN_NAME, textName.text.toString())
+        contentValues.put(FabricEntry.COLUMN_DESIGNER, textDesigner.text.toString())
+        contentValues.put(FabricEntry.COLUMN_PURCHASED, textPurchased.text.toString())
         contentValues.put(FabricEntry.COLUMN_IMAGE, tempPath)
 
         if (fabricUri == null) {
@@ -264,9 +261,7 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
             return true
         } else {
             //Edit
-            Log.d("FabricTest", "Uri: " + fabricUri.toString())
             val updatedNum = contentResolver.update(fabricUri, contentValues, null, null)
-            Log.d("FabricTest", "updated: " + updatedNum.toString())
             if (updatedNum == 0) {
                 Toast.makeText(this, R.string.fail_to_update, Toast.LENGTH_SHORT).show()
                 deleteImage(tempPath)
@@ -318,7 +313,7 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
      */
     private fun deleteImage(imagePath: String) {
         if (imagePath.isNotEmpty()) {
-            var file = File(imagePath)
+            val file = File(imagePath)
             if (file.exists()) {
                 file.delete()
             }
@@ -335,7 +330,7 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
                     val extras = data!!.extras
                     tempBitmap = extras!!.get("data") as Bitmap
 
-                    imageFabric?.setImageBitmap(tempBitmap)
+                    imageFabric.setImageBitmap(tempBitmap)
                 }
             }
         }
@@ -385,21 +380,21 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
                 val purchasedText = data.getString(data.getColumnIndex(FabricEntry.COLUMN_PURCHASED))
                 pathImage = data.getString(data.getColumnIndex(FabricEntry.COLUMN_IMAGE))
 
-                textDescription?.setText(descriptionText)
-                textKeywords?.setText(keywordsText)
-                textLocation?.setText(locationText)
-                textProjects?.setText(projectsText)
-                textYards?.setText(yardsInt.toString())
-                textWidth?.setText(widthInt.toString())
-                textName?.setText(dNameText)
-                textDesigner?.setText(designerText)
-                textPurchased?.setText(purchasedText)
+                textDescription.setText(descriptionText)
+                textKeywords.setText(keywordsText)
+                textLocation.setText(locationText)
+                textProjects.setText(projectsText)
+                textYards.setText(yardsInt.toString())
+                textWidth.setText(widthInt.toString())
+                textName.setText(dNameText)
+                textDesigner.setText(designerText)
+                textPurchased.setText(purchasedText)
 
 
                 if (pathImage.isEmpty()) {
-                    imageFabric?.setImageResource(R.drawable.ic_photo_camera_24dp)
+                    imageFabric.setImageResource(R.drawable.ic_photo_camera_24dp)
                 } else {
-                    imageFabric?.setImageURI(Uri.fromFile(File(pathImage)))
+                    imageFabric.setImageURI(Uri.fromFile(File(pathImage)))
                 }
             }
         }
@@ -409,16 +404,16 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
      *
      */
     override fun onLoaderReset(loader: Loader<Cursor>?) {
-        textDescription?.text?.clear()
-        textKeywords?.text?.clear()
-        textLocation?.text?.clear()
-        textProjects?.text?.clear()
-        textYards?.text?.clear()
-        textWidth?.text?.clear()
-        textName?.text?.clear()
-        textDesigner?.text?.clear()
-        textPurchased?.text?.clear()
+        textDescription.text?.clear()
+        textKeywords.text?.clear()
+        textLocation.text?.clear()
+        textProjects.text?.clear()
+        textYards.text?.clear()
+        textWidth.text?.clear()
+        textName.text?.clear()
+        textDesigner.text?.clear()
+        textPurchased.text?.clear()
 
-        imageFabric?.setImageResource(R.drawable.ic_broken_image_24dp)
+        imageFabric.setImageResource(R.drawable.ic_broken_image_24dp)
     }
 }
