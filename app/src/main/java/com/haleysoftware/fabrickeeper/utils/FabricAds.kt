@@ -13,10 +13,6 @@ import com.haleysoftware.fabrickeeper.R
 
 class FabricAds(private val adContext: Context) : AdListener() {
 
-    override fun onAdClosed() {
-        super.onAdClosed()
-    }
-
     override fun onAdFailedToLoad(i: Int) {
         val rootView = (adContext as Activity).window.decorView.findViewById<View>(android.R.id.content)
         val adSpace = rootView.findViewById<View>(R.id.adSpacer)
@@ -26,25 +22,5 @@ class FabricAds(private val adContext: Context) : AdListener() {
         ads.visibility = View.GONE
 
         super.onAdFailedToLoad(i)
-    }
-
-    override fun onAdLeftApplication() {
-        super.onAdLeftApplication()
-    }
-
-    override fun onAdOpened() {
-        super.onAdOpened()
-    }
-
-    override fun onAdLoaded() {
-        super.onAdLoaded()
-    }
-
-    override fun onAdClicked() {
-        super.onAdClicked()
-    }
-
-    override fun onAdImpression() {
-        super.onAdImpression()
     }
 }

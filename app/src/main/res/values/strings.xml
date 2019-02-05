@@ -14,11 +14,12 @@
     <string name="name_edit">Edit Fabric</string>
 
     <!-- Ad Id Strings -->
-    <!-- test -->
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-    <!-- TODO Need to enter ID Here -->
-    <!-- my -->
-    <string name="my_banner_ad_unit_id">Enter ID Here</string>
+    <!-- Test -->
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544~6300978111</string>
+    <string name="banner_ad_unit_id_layout">ca-app-pub-3940256099942544/6300978111</string>
+    <!-- Mine -->
+    <string name="my_banner_ad_unit_id">Enter here with ~</string>
+    <string name="my_banner_ad_unit_id_layout">Enter here with /</string>
 
 
     <!-- View Strings -->

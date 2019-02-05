@@ -10,6 +10,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.haleysoftware.fabrickeeper.utils.FabricContract
 import java.io.File
@@ -19,13 +21,13 @@ import java.io.File
  */
 class ImageActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> {
 
-    private val LOADER_ID = 33
+    @BindView(R.id.iv_fabric_full) lateinit var imageFabric : ImageView
 
-    private var imageFabric: ImageView? = null
+    private val LOADER_ID = 33
 
     private var fabricUri: Uri? = null
 
-    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     /**
      *
@@ -33,9 +35,9 @@ class ImageActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image)
+        ButterKnife.bind(this)
 
-        // Obtain the FirebaseAnalytics instance.
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         val bundleIntent = intent
         fabricUri = bundleIntent.data
@@ -87,9 +89,9 @@ class ImageActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>
 
 
             if (imageText.isEmpty()) {
-                imageFabric?.setImageResource(R.drawable.ic_broken_image_24dp)
+                imageFabric.setImageResource(R.drawable.ic_broken_image_24dp)
             } else {
-                imageFabric?.setImageURI(Uri.fromFile(File(imageText)))
+                imageFabric.setImageURI(Uri.fromFile(File(imageText)))
             }
         }
     }
@@ -98,6 +100,6 @@ class ImageActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor>
      *
      */
     override fun onLoaderReset(loader: Loader<Cursor>?) {
-        imageFabric?.setImageResource(R.drawable.ic_broken_image_24dp)
+        imageFabric.setImageResource(R.drawable.ic_broken_image_24dp)
     }
 }

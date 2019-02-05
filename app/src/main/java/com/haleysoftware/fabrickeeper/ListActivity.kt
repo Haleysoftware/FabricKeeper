@@ -1,10 +1,7 @@
 package com.haleysoftware.fabrickeeper
 
 import android.app.LoaderManager.LoaderCallbacks
-import android.content.ContentUris
-import android.content.CursorLoader
-import android.content.Intent
-import android.content.Loader
+import android.content.*
 import android.database.Cursor
 import android.os.Bundle
 import android.view.Menu
@@ -16,6 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.haleysoftware.fabrickeeper.utils.FabricAdapter
@@ -89,10 +87,7 @@ class ListActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, SearchView.On
             startActivity(activityIntent)
         }
 
-        adsView = findViewById(R.id.adView)
-        val adRequest = AdRequest.Builder().build()
-        adsView?.adListener = FabricAds(this)
-        adsView?.loadAd(adRequest)
+        createAds(context = this)
 
         fabricAdapter = FabricAdapter(this, null, 0)
         fabricList?.adapter = fabricAdapter
@@ -100,11 +95,29 @@ class ListActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, SearchView.On
     }
 
     /**
-     * Restarts the loader, used mostly when activity is returned to
+     * Pauses the ad if there is one.
+     */
+    override fun onPause() {
+        super.onPause()
+        adsView?.pause()
+    }
+
+    /**
+     * Restarts the loader, used mostly when activity is returned to.
+     * Resumes the ad if there is one.
      */
     override fun onResume() {
         super.onResume()
+        adsView?.resume()
         loaderManager.restartLoader(loaderId, null, this)
+    }
+
+    /**
+     * Destroys the ad if there is one.
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        adsView?.destroy()
     }
 
     /**
@@ -112,11 +125,25 @@ class ListActivity : AppCompatActivity(), LoaderCallbacks<Cursor>, SearchView.On
      */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_list, menu)
-
         val search = menu!!.findItem(R.id.action_search).actionView as SearchView
         search.setOnQueryTextListener(this)
-
         return true
+    }
+
+    /**
+     * Sets up the ad view and displays and ad.
+     */
+    private fun createAds(context: Context) {
+        val adString : String = resources.getString(R.string.banner_ad_unit_id)
+        MobileAds.initialize(context, adString)
+
+        adsView = findViewById(R.id.adView)
+        val adRequest = AdRequest.Builder()
+                .addTestDevice("017DFE675121B084DB5B940BFC1C41CC")
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build()
+        adsView?.adListener = FabricAds(context)
+        adsView?.loadAd(adRequest)
     }
 
     //TODO: Need to add a menu item to remove ads

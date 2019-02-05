@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.haleysoftware.fabrickeeper.utils.FabricAds
 import com.haleysoftware.fabrickeeper.utils.FabricContract.FabricEntry
@@ -72,10 +73,7 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
             supportActionBar?.setTitle(R.string.name_edit)
         }
 
-        adsView = findViewById(R.id.adView)
-        val adRequest = AdRequest.Builder().build()
-        adsView?.adListener = FabricAds(this)
-        adsView?.loadAd(adRequest)
+        createAds(context = this)
 
         textDescription = findViewById(R.id.et_description)
         textKeywords = findViewById(R.id.et_keywords)
@@ -97,6 +95,48 @@ class EditActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
         } else {
             imageFabric?.setImageResource(R.drawable.ic_photo_camera_24dp)
         }
+    }
+
+    /**
+     * Pauses the ad if there is one.
+     */
+    override fun onPause() {
+        super.onPause()
+        adsView?.pause()
+    }
+
+    /**
+     * Restarts the loader, used mostly when activity is returned to.
+     * Resumes the ad if there is one.
+     */
+    override fun onResume() {
+        super.onResume()
+        adsView?.resume()
+        loaderManager.restartLoader(loaderId, null, this)
+    }
+
+    /**
+     * Destroys the ad if there is one.
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        adsView?.destroy()
+    }
+
+    /**
+     * Sets up the ad view and displays and ad.
+     */
+    private fun createAds(context: Context) {
+        val adString : String = resources.getString(R.string.banner_ad_unit_id)
+        MobileAds.initialize(context, adString)
+
+        adsView = findViewById(R.id.adView)
+        val adRequest = AdRequest.Builder()
+                .addTestDevice("017DFE675121B084DB5B940BFC1C41CC")
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build()
+        adsView?.adListener = FabricAds(context)
+        adsView?.loadAd(adRequest)
     }
 
     /**

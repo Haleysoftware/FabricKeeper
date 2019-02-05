@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.haleysoftware.fabrickeeper.utils.FabricAds
 import com.haleysoftware.fabrickeeper.utils.FabricContract.FabricEntry
@@ -25,6 +26,8 @@ import java.io.File
  */
 class DetailActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> {
 
+
+
     private val LOADER_ID = 22
 
     private var adsView: AdView? = null
@@ -33,13 +36,13 @@ class DetailActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
 
     private var fabricUri: Uri? = null
 
-    private var textDescription: TextView? = null
-    private var textKeywords: TextView? = null
-    private var textLocation: TextView? = null
-    private var textProjects: TextView? = null
-    private var textYards: TextView? = null
-    private var textWidth: TextView? = null
-    private var textName: TextView? = null
+    private lateinit var textDescription: TextView
+    private lateinit var textKeywords: TextView
+    private lateinit var textLocation: TextView
+    private lateinit var textProjects: TextView
+    private lateinit var textYards: TextView
+    private lateinit var textWidth: TextView
+    private lateinit var textName: TextView
     private var textDesigner: TextView? = null
     private var textPurchased: TextView? = null
     private var imageFabric: ImageView? = null
@@ -62,10 +65,7 @@ class DetailActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
         val bundleIntent = intent
         fabricUri = bundleIntent.data
 
-        adsView = findViewById(R.id.adView)
-        val adRequest = AdRequest.Builder().build()
-        adsView?.adListener = FabricAds(adContext = this)
-        adsView?.loadAd(adRequest)
+        createAds(context = this)
 
         textDescription = findViewById(R.id.tv_description)
         textKeywords = findViewById(R.id.tv_keywords)
@@ -86,11 +86,51 @@ class DetailActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor
     }
 
     /**
+     * Pauses the ad if there is one.
+     */
+    override fun onPause() {
+        super.onPause()
+        adsView?.pause()
+    }
+
+    /**
+     * Resumes the ad if there is one.
+     */
+    override fun onResume() {
+        super.onResume()
+        adsView?.resume()
+    }
+
+    /**
+     * Destroys the ad if there is one.
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        adsView?.destroy()
+    }
+
+    /**
      * Let's create a menu
      */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_detail, menu)
         return true
+    }
+
+    /**
+     * Sets up the ad view and displays and ad.
+     */
+    private fun createAds(context: Context) {
+        val adString : String = resources.getString(R.string.banner_ad_unit_id)
+        MobileAds.initialize(context, adString)
+
+        adsView = findViewById(R.id.adView)
+        val adRequest = AdRequest.Builder()
+                .addTestDevice("017DFE675121B084DB5B940BFC1C41CC")
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build()
+        adsView?.adListener = FabricAds(context)
+        adsView?.loadAd(adRequest)
     }
 
     /**
